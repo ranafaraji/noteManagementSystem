@@ -6,11 +6,16 @@ import { Link } from "react-router-dom";
 
 
 
-const user_regex = /^[A-z][A-z0-9-_]{3,23}$/;
-/*[a-zA-Z] - This character class represents a single character that can be any uppercase or lowercase letter of the English alphabet.
-[a-zA-Z0-9-] - This character class represents a single character that can be an uppercase or lowercase letter of the English alphabet, a digit (0-9), an underscore (), or a hyphen (-).
+const user_regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+/*[a-zA-Z0-9._%+-]+: (before the "@" symbol). It allows for one or more occurrences of alphanumeric characters (a-z, A-Z, 0-9), as well as certain special characters (._%+-).
 
-String that starts with a single letter (uppercase or lowercase), followed by a single character that can be a letter (uppercase or lowercase), a digit, an underscore, or a hyphen. The total length of the string should be between 4 and 24 characters.*/
+[a-zA-Z0-9.-]+: domain name the email. It allows for one or more occurrences of alphanumeric characters (a-z, A-Z, 0-9), as well as periods and hyphens.
+
+\.: dot (.) 
+
+[a-zA-Z]{2,}: This part matches the top-level domain, minimum length of 2 characters .
+
+$: end of the input string.*/
 
 const pass_regex= /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 /*?= is a positive lookahead, a type of zero-width assertion. captured match must be followed by whatever is within the parentheses but that part isn't captured.
@@ -31,7 +36,7 @@ const Register = () => {
     const userRef = useRef(); /*focus user input*/
     const errRef = useRef();
 
-    const [user, setUser] = useState(''); /*user input*/
+    const [mail, setMail] = useState(''); /*user input*/
     const [validName, setValidName] = useState(false); /*after test*/
     const [userFocus, setUserFocus] = useState(false); //focus user part
 
@@ -53,8 +58,8 @@ const Register = () => {
 
     /*to validate user*/
     useEffect(() => {
-        setValidName(user_regex.test(user));
-    }, [user])
+        setValidName(user_regex.test(mail));
+    }, [mail])
 
     /*to validate password*/
     useEffect(() => {
@@ -65,7 +70,7 @@ const Register = () => {
     /*Error Message*/
     useEffect(() => {
         setErrMsg('');
-    }, [user, pass, matchPass]) /*once user change one of the info, error meaasge come out*/
+    }, [mail, pass, matchPass]) /*once user change one of the info, error meaasge come out*/
 
 
     
@@ -73,7 +78,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();// to prevent hack by default submit form
         //to prevent subimit button can be pressed
-        const v1 = user_regex.test(user);
+        const v1 = user_regex.test(mail);
         const v2 = pass_regex.test(pass);
         if (!v1 || !v2) {
             setErrMsg("Invalid Entry");
@@ -81,7 +86,7 @@ const Register = () => {
         }
         try {
             const response = await axios.post(REGISTER_URL,
-                JSON.stringify({ user, pass }),
+                JSON.stringify({ mail, pass }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -93,7 +98,7 @@ const Register = () => {
             setSuccess(true);
             //clear state and controlled inputs
             //need value attrib on inputs for this
-            setUser('');
+            setMail('');
             setPass('');
             setMatchPass('');
         } catch (err) {
@@ -101,7 +106,7 @@ const Register = () => {
                 setErrMsg('No Server Response');
             } else if (err.response?.status === 409) {
                 //conflict between the requested resources and the current state of the server 
-                setErrMsg('Username Taken');
+                setErrMsg('Email Taken');
             } else {
                 setErrMsg('Registration Failed')
             }
@@ -116,10 +121,10 @@ const Register = () => {
         {/*if have a acc, if not register*/}
             {success ? (
                 <section>
-                    <h1>Success!</h1>
-                    <p>
-                        <a href="#">Sign In</a>
-                    </p>
+                    <h1 style={{color:'green'}}>Success!</h1>
+                    <span className="line">
+                            <Link to="/login" style={{color:'green', textDecoration:'underline'}}>Sign In</Link>
+                        </span>
                 </section>
             ) : (
                 <section id="lgsec">
@@ -127,21 +132,21 @@ const Register = () => {
                     <h1 className="regis">Register</h1>
                     <form onSubmit = {handleSubmit}>
 {/*====================user field===========================*/}
-                        <label htmlFor="username">
-                            Username:
+                        <label htmlFor="email">
+                            E-mail:
                              {/*to check if not valid, hide the green mark, should be true after test the user regex, display green mark*/} 
                             <FontAwesomeIcon icon={faCheck}
                             className={validName ? "valid" : "hide"} />
                              {/*by default is false, if valid true hide red mark, or user state empty, if it is not empty, hide red mark*/}
-                            <FontAwesomeIcon icon={faTimes} className={validName || !user ? "hide" : "invalid"} />
+                            <FontAwesomeIcon icon={faTimes} className={validName || !mail ? "hide" : "invalid"} />
                         </label>
                         <input
                             type="text"
-                            id="username"
+                            id="email"
                             ref={userRef}/*focus input*/
                             autoComplete="off"/*didnt display previous input value*/
-                            onChange={(e) => setUser(e.target.value)}/*user state*/
-                            value={user}
+                            onChange={(e) => setMail(e.target.value)}/*user state*/
+                            value={mail}
                             required/*to specify input must be filled out before submitting*/
                             aria-invalid={validName ? "false" : "true"}/*to determine valid input before submit
                             dont have validname, if have validn name will return true*/
@@ -153,11 +158,9 @@ const Register = () => {
                         {/*if userfocus true, user state exist not  empty, not a valid name*/}
 
                         {/*display condition let user know how to set username*/}
-                        <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
+                        <p id="uidnote" className={userFocus && mail && !validName ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
-                            4 to 24 characters.<br />
-                            Must begin with a letter.<br />
-                            Letters, numbers, underscores, hyphens allowed.
+                            
                         </p>
 
 {/*====================password field=================*/}
@@ -221,7 +224,7 @@ const Register = () => {
                     <p id='remind'>
                         Already have an account?<br />
                         <span className="line">
-                            <Link to="/">Sign In</Link>
+                            <Link to="/login" style={{color:'white', textDecoration:'underline'}}>Sign In</Link>
                         </span>
                     </p>
                 </section>
@@ -231,4 +234,3 @@ const Register = () => {
 }
 
 export default Register;
-
