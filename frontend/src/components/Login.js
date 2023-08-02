@@ -82,7 +82,7 @@ const Login = () => {
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     <h1>Sign In</h1>
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username:</label>
+                        <label htmlFor="username">E-mail:</label>
                         <input
                             type="text"
                             id="username"
@@ -107,7 +107,14 @@ const Login = () => {
                     <p id='remind'>
                         Create an account :<br />
                         <span className="line">
-                            <Link to="/register">Sign Up</Link>
+                            <Link to="/register" style={{color:'white', textDecoration:'underline'}}>Sign Up</Link>
+                        </span>
+                    </p>
+                    <br/>
+                    <p id='remind'>
+                        Forgot password? <br />
+                        <span className="line">
+                            <Link to="/changePass" style={{color:'white', textDecoration:'underline'}}>Change Password</Link>
                         </span>
                     </p>
                 </section>
