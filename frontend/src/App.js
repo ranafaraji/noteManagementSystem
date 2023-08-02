@@ -57,15 +57,16 @@ function App(){
  
   return(
 
-      <Routes>
+     <Routes>
           <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Home/>}/>
             {/*Route below are protected*/}
             <Route element={<RequireAuth/>}/>
             
-            <Route path="/" element={<Login/>}/>
+            <Route path="/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
 
-            <Route path="/" element={<NoteBook notes={notes} handleAddNote={addNote} handleDeleteNote={deleteNote}/>}/>
+            <Route path="/notebook" element={<NoteBook notes={notes} handleAddNote={addNote} handleDeleteNote={deleteNote}/>}/>
             <Route path="/create-note" element={<Note/>}/>
             <Route path="/edit-note/:id" element={<CreateNote/>}/>
             </Route>
