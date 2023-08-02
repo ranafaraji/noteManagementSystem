@@ -26,7 +26,7 @@ create_table()  # Call the function to create the table when the app starts
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    username = data.get('user')
+    username = data.get('mail')
     password = data.get('pass')
     if not username or not password:
         return jsonify({'error': 'Invalid data'}), 400
