@@ -9,7 +9,7 @@
 html {
     font-family: 'Nunito', sans-serif;
     font-size: 22px;
-    color: #fff;
+    
 }
 
 body {
@@ -59,9 +59,7 @@ body {
 }
 
 
-a, a:visited {
-    color: #fff;
-}
+
 
 input[type="text"],
 input[type="password"],
@@ -144,7 +142,4 @@ button:hover{
     display: inline-block;
 }
 
-/*====================login/ register==============================*/
-.notehome{
 
-}
