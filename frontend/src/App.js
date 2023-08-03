@@ -4,6 +4,7 @@ import {useState} from 'react';
 import {nanoid} from 'nanoid';
 import Login from './components/Login';
 import Register from './components/Register';
+import ForgotPassword from './components/ForgotPass';
 import Layout from './components/Layout';
 import Home from './components/Home';
 import RequireAuth from './components/RequireAuth';
@@ -61,6 +62,7 @@ function App(){
           <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home/>}/>
             {/*Route below are protected*/}
+            <Route path="/ForgotPass" element={<ForgotPassword/>}/>
             <Route element={<RequireAuth/>}/>
             
             <Route path="/login" element={<Login/>}/>
