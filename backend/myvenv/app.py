@@ -66,6 +66,27 @@ def login():
 
     return jsonify({'message': 'Login Successful'}), 200
 
+
+#forgot pass
+@app.route('/ForgotPass', methods=['POST'])
+
+def forgot_password():
+    data = request.get_json()
+    username = data.get('email')
+
+    with sqlite3.connect(db_path) as conn:  # Connect to the database
+        cursor = conn.cursor()
+
+        # Check if the username (email) exists in the database
+        cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            return jsonify({'message': 'Password reset allowed.'}), 200
+        else:
+            return jsonify({'message': 'Email not registered. Please enter another email.'}), 404
+
+
 # Add more routes and functionalities as needed
 
 if __name__ == '__main__':
