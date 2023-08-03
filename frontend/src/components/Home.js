@@ -14,13 +14,18 @@ const Home = () => {
     }
 */
     return (
-        <section>
-            <h1>Home</h1>
-            <br />
-            <p>You are logged in!</p>
-            <br />
-            
-        </section>
+    <div className="home">
+        <header className="header">
+            <nav>
+             <Link to="/home" className="naviLink">Home</Link>
+
+            <Link to="/notebook" className="naviLink">My Notebook</Link>
+            <Link to="/search" className="naviLink">Search Notebook</Link>
+            <button className="btnLogin"><Link to="/login">Login</Link></button>
+
+            </nav>
+        </header>
+    </div>
     )
 }
 
