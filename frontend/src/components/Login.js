@@ -114,7 +114,7 @@ const Login = () => {
                     <p id='remind'>
                         Forgot password? <br />
                         <span className="line">
-                            <Link to="/changePass" style={{color:'white', textDecoration:'underline'}}>Change Password</Link>
+                            <Link to="/ForgotPass" style={{color:'white', textDecoration:'underline'}}>Change Password</Link>
                         </span>
                     </p>
                 </section>
