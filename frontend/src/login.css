@@ -50,6 +50,20 @@ body {
     border-radius: 45px;
 }
 
+#loginregis #forgotpass {
+    width: 100%;
+    max-width: 450px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 1rem;
+    margin-bottom: 20px;
+    background-color: #0C134F;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0,0,0, .5);
+    border-radius: 45px;
+}
 
 #lgsec form {
     display: flex;
@@ -63,11 +77,12 @@ body {
 
 input[type="text"],
 input[type="password"],
+input[type="email"],
 button,
 textarea {
   font-family: 'Nunito', sans-serif;
   font-size: 22px;
-  padding: 0.25rem;
+  padding: 0.36rem;
   border-radius: 0.5rem;
   
 }
@@ -79,7 +94,8 @@ button {
 }
 
 button {
-  padding: 0.5rem;
+    padding: 0.5rem;
+    margin-left: 5px;
     background-color:#0A6EBD;
     color: #fff;
     border: none;
