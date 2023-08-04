@@ -68,12 +68,19 @@ def login():
 
 
 #forgot pass
+
 @app.route('/ForgotPass', methods=['POST'])
+def generate_new_password(length=12):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    new_password = ''.join(random.choice(characters) for _ in range(length))
+
+    return new_password
 
 def forgot_password():
     data = request.get_json()
     username = data.get('email')
-
+    new_password = generate_new_password()
+    
     with sqlite3.connect(db_path) as conn:  # Connect to the database
         cursor = conn.cursor()
 
@@ -82,6 +89,8 @@ def forgot_password():
         existing_user = cursor.fetchone()
 
         if existing_user:
+            cursor.execute("UPDATE users SET password = ? WHERE username = ?", (new_password, username))
+            conn.commit()
             return jsonify({'message': 'Password reset allowed.'}), 200
         else:
             return jsonify({'message': 'Email not registered. Please enter another email.'}), 404
