@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: none;
+}
+
+html {
+    font-family: 'Nunito', sans-serif;
+    font-size: 22px;
+    color: #fff;
+}
+
+
+#notehome{
+    max-height: 100vh; 
+    min-width: 100vh;
+    padding: 1rem 10px;
+    margin: 10px 100px 10px 100px;
+    border: 2px solid green;
+  }
+
+.noteheader h1{
+    justify-content: center;
+    text-align: center;
+    color: #0C134F;
+}
+
+#notesec {
+    min-width: 100vh;
+    height: 100vh;
+    padding: 20px;
+    border: 2px solid blue;
+    border-radius: 45px;
+    
+}
+
+#search{
+    color:#0C134F;
+    background-color: transparent;
+    cursor: pointer;
+    transition: opacity 0.1s ease;
+}
+#search:hover{
+    opacity: 0.8;
+}
+
+.searchbar{
+    
+    outline: none;
+}
+
+.noteList{
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto,minmax(300px,1fr));
+
+}
+
+.note{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #0C134F;
+    background-color:#FAF3F0 ;
+    min-height: 150px;
+    margin: 10px 10px 5px;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.notedatedel,.notefooter{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.note.new{
+    background-color: aquamarine;
+}
+
+textarea{
+    border: none;
+    resize: none;
+    background-color: aquamarine;
+}
+
+textarea:focus{
+    outline: none;
+}
+
+.savebtn{
+    background-color: cadetblue;
+    border: none;
+    border-radius: 0.8rem;
+    padding:8px 13px;
+
+}
