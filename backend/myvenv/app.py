@@ -150,6 +150,8 @@ def register():
 #             return jsonify({"exists": True})
 #         else:
 #             return jsonify({"exists": False})
+
+       
         
 
 # Endpoint for user authentication (login)
