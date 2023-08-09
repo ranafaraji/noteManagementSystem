@@ -217,6 +217,9 @@ def ResetPassword():
     if not username or not password:
         return jsonify({'error': 'Invalid data'}), 400
 
+
+
+
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
         update_query="UPDATE users set password = ? WHERE username = ?"
