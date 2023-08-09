@@ -10,13 +10,12 @@ import os
 app = Flask(__name__)
 SECRET_KEY = os.urandom(24)
 CORS(app, supports_credentials=True)  # Set supports_credentials to True
-
+app.secret_key = SECRET_KEY
 db_path = 'my_database.db'  # Change this path if you want the database file in a different location
 
 def generate_reset_token(length=32):
     characters = string.ascii_letters + string.digits
     return ''.join(random.choice(characters) for _ in range(length))
-
 
 # Create Email Templates:
 # Design email templates for the reset password
@@ -91,15 +90,11 @@ def send_reset_email(user_email, reset_token):
     subject = 'Password Reset Request'
     sender = 'fyp_test2023@outlook.com'
     recipients = [user_email]
-    
     reset_link = url_for('reset_password', reset_token=reset_token, _external=True)
     body = f'Click the following link to reset your password: {reset_link}'
-    
     message = Message(subject=subject, sender=sender, recipients=recipients)
     message.body = body
-    
     mail.send(message)
-# send_reset_email(email, reset_token)
     return jsonify({'message': ' successfully sent email'}), 201
 # Function to create the SQLite database table
 def create_table():
@@ -150,8 +145,6 @@ def register():
 #             return jsonify({"exists": True})
 #         else:
 #             return jsonify({"exists": False})
-
-       
         
 
 # Endpoint for user authentication (login)
@@ -179,8 +172,8 @@ def login():
 
 
 # Function to generate a random string for the password reset token
-def generate_token():
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=30))
+# def generate_token():
+#     return ''.join(random.choices(string.ascii_letters + string.digits, k=30))
 
 # Route to request password reset
 # @app.route('/request_reset', methods=['GET', 'POST'])
@@ -217,12 +210,9 @@ def ResetPassword():
     if not username or not password:
         return jsonify({'error': 'Invalid data'}), 400
 
-
-
-
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
-        update_query="UPDATE users set password = ? WHERE username = ?"
+        update_query = "UPDATE users set password = ? WHERE username = ?"
         cursor.execute(update_query,(password, username))
         conn.commit()        
 
@@ -238,6 +228,11 @@ def generate_new_password(length=12):
     # send_reset_email(email, reset_token)
     return new_password
 
+@app.route('/Get_Token', methods=['GET'])
+def generate_reset_token(length=32):
+     characters = string.ascii_letters + string.digits
+     generated_token = ''.join(random.choice(characters) for _ in range(length))
+     return generated_token
 # def forgot_password():
 #     data = request.get_json()
 #     username = data.get('mail')
@@ -257,6 +252,58 @@ def generate_new_password(length=12):
 #         else:
 #             return jsonify({'message': 'Email not registered. Please enter another email.'}), 404
 
+@app.route('/Create_Notes', methods=['POST'])
+def Create_Notes():
+    data = request.get_json()
+    username = data.get('email')
+    notes = data.get('notes')
+    if not username:
+        return jsonify({'error': 'Users Does Not Exist'}), 400
+
+    with sqlite3.connect(db_path) as conn:
+        cursor = conn.cursor()
+        # update_query = "INSERT INTO notes (notes, username) VALUES (?, ?)"
+        update_query = "INSERT INTO notes (notes, username) VALUES ( ?, (SELECT id from users  WHERE username=?));"
+        cursor.execute(update_query, (notes, username))
+        conn.commit()
+
+    return jsonify({'message': 'Notes Saved Successfully'}), 201
+
+# updating notes
+
+@app.route('/UpdateNotes', methods=['POST'])
+def update_notes():
+    data = request.get_json()
+    # username = data.get('email')
+    notes = data.get('notes')
+    notesid = data.get('notes_id')
+    if not notesid:
+        return jsonify({'error': 'notes Does Not Exist'}), 400
+
+    with sqlite3.connect(db_path) as conn:
+        cursor = conn.cursor()
+        update_query = "UPDATE notes set notes = ? WHERE notesid = ?"
+        cursor.execute(update_query, (notes, notesid))
+        conn.commit()
+
+    return jsonify({'message': 'Notes Saved Successfully'}), 201
+
+# delete notes
+@app.route('/DeleteNotes', methods=['POST'])
+def delete_notes():
+    data = request.get_json()
+    # username = data.get('email')
+    notesid = data.get('notes_id')
+    if not notesid:
+        return jsonify({'error': 'notes Does Not Exist'}), 400
+
+    with sqlite3.connect(db_path) as conn:
+        cursor = conn.cursor()
+        update_query = "DELETE from notes WHERE notesid = ?"
+        cursor.execute(update_query, notesid)
+        conn.commit()
+
+    return jsonify({'message': 'Notes Delete Successfully'}), 201
 
 # Add more routes and functionalities as needed
 
