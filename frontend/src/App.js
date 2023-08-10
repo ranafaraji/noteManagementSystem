@@ -61,6 +61,7 @@ function App(){
      <Routes>
           <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home/>}/>
+          <Route path="/home" element={<Home/>}/>
             {/*Route below are protected*/}
             <Route path="/ForgotPass" element={<ForgotPassword/>}/>
             <Route element={<RequireAuth/>}/>
