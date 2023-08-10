@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './login.css';
 import './note.css';
+import './home.css';
 import App from './App';
 import { AuthProvider } from './context/AuthProvider';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
