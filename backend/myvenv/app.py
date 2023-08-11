@@ -167,39 +167,45 @@ def login():
 
     return jsonify({'message': 'Login Successful'}), 200
 
+# Add more routes and functionalities as needed
+@app.route('/ForgotPass', methods=['POST'])
+def generate_new_password(length=12):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    new_password = ''.join(random.choice(characters) for _ in range(length))
+
+    return new_password
 
 
+#  Forgot Password fixed
+def generate_new_password(length=12):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    new_password = ''.join(random.choice(characters) for _ in range(length))
+    # send_reset_email(email, reset_token)
+    return new_password
 
 
-# Function to generate a random string for the password reset token
-# def generate_token():
-#     return ''.join(random.choices(string.ascii_letters + string.digits, k=30))
+@app.route('/ForgotPass', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    username = data.get('mail')
+    new_password = generate_new_password()
+    with sqlite3.connect(db_path) as conn:  # Connect to the database
+        cursor = conn.cursor()
+        # Check if the username (email) exists in the database
+        cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
+        existing_user = cursor.fetchone()
 
-# Route to request password reset
-# @app.route('/request_reset', methods=['GET', 'POST'])
-# def request_reset():
-#     if request.method == 'POST':
-#         email = request.form['email']  # You can use the email to identify the user in the database
-#         token = generate_token()
-#         # Save the token in the database associated with the user's email
-#         # Here, you can update the 'users' table to store the token for a user
-#         # Example: con.execute("UPDATE users SET reset_token = ? WHERE email = ?", (token, email))
-#         # Send the reset token to the user's email (you'll need to implement this part)
-
-#     return render_template('request_reset.html')
+        if existing_user:
+            with sqlite3.connect(db_path) as connn:
+                cursor = connn.cursor()
+                update_query = "UPDATE users set password = ? WHERE username = ?"
+                cursor.execute(update_query, (new_password, username))
+                connn.commit()
+            return jsonify({'message': 'Password updated.'}), 200
+        else:
+            return jsonify({'message': 'Email not registered. Please enter valid email.'}), 404
 
 
-
-# # Route to reset password with the token
-# @app.route('/ForgotPass/<token>', methods=['GET', 'POST'])
-# def ForgotPass(token):
-#     if request.method == 'POST':
-#         password = request.form['password']
-#         # Verify the token and user's email from the database
-#         # Here, you need to fetch the user by the token and check if the token is valid and hasn't expired
-#         # If the token is valid, update the user's password in the database with the new password
-
-#     return render_template('reset_password.html')
 
 # Endpoint for reset passssword
 @app.route('/ResetPassword', methods=['POST'])
@@ -219,38 +225,14 @@ def ResetPassword():
     return jsonify({'message': 'Password Successfuly reset'}), 201
 
 
-#forgot pass
 
-@app.route('/ForgotPass', methods=['POST'])
-def generate_new_password(length=12):
-    characters = string.ascii_letters + string.digits + string.punctuation
-    new_password = ''.join(random.choice(characters) for _ in range(length))
-    # send_reset_email(email, reset_token)
-    return new_password
 
 @app.route('/Get_Token', methods=['GET'])
 def generate_reset_token(length=32):
      characters = string.ascii_letters + string.digits
      generated_token = ''.join(random.choice(characters) for _ in range(length))
      return generated_token
-# def forgot_password():
-#     data = request.get_json()
-#     username = data.get('mail')
-#     new_password = generate_new_password()
-    
-#     with sqlite3.connect(db_path) as conn:  # Connect to the database
-#         cursor = conn.cursor()
 
-#         # Check if the username (email) exists in the database
-#         cursor.execute("SELECT id FROM users WHERE username = ?", (username,))
-#         existing_user = cursor.fetchone()
-
-#         if existing_user:
-#             cursor.execute("UPDATE users SET password = ? WHERE username = ?", (new_password, username))
-#             conn.commit()
-#             return jsonify({'message': 'Password reset allowed.'}), 200
-#         else:
-#             return jsonify({'message': 'Email not registered. Please enter another email.'}), 404
 
 @app.route('/Create_Notes', methods=['POST'])
 def Create_Notes():
