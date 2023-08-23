@@ -11,11 +11,12 @@ const LOGIN_URL = '/auth'; //connect backend
 const Login = () => {
     //to access the value of a context object that has been created using the createContext function
     const { setAuth } = useAuth();
-
     const navi= useNavigate();
     const location =useLocation();
     const from= location.state?.from?.pathname || "/notebook"; 
-   
+
+    const [token, setToken] = useState();
+
     //focus area
     const userRef = useRef();
     const errRef = useRef();
@@ -47,7 +48,9 @@ const Login = () => {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
+
             );
+
             //only data property
             console.log(JSON.stringify(response?.data));
             //all data
@@ -55,10 +58,9 @@ const Login = () => {
             const accessToken = response?.data?.accessToken; 
             //array
             const roles = response?.data?.roles;
+            const userString = localStorage.getItem('user');
 
             setAuth({ user, pwd, roles, accessToken });
-            setUser('');
-            setPwd('');
             navi(from, {replace:true});
              
         } catch (err) {
@@ -75,8 +77,10 @@ const Login = () => {
             errRef.current.focus(); //screen reader focus error display
         }
     }
+
+
 //=====================================================
-    return (
+   return (
         <div div id="loginregis">
                 <section id="lgsec">
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -112,8 +116,17 @@ const Login = () => {
                     </p>
                     <br/>
                     <p id='remind'>
+                    <br />
                         <span className="line">
                             <Link to="/ForgotPass" style={{color:'white', textDecoration:'underline'}}>Forgot Password?</Link>
+                        </span>
+
+                    </p>
+
+                    <p id='remind'>
+                    <br />
+                        <span className="line">
+                            <Link to="/Home" style={{color:'white', textDecoration:'underline'}}>Home</Link>
                         </span>
                     </p>
                 </section>
