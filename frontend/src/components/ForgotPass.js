@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const FORGOTPASS_URL = '/ForgotPass';
 
+const pass_regex= /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+
 
 const ForgotPassword = () => {
     const userRef = useRef();
@@ -24,11 +26,22 @@ const ForgotPassword = () => {
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
 
-useEffect(() => {
-        setErrMsg('');
-    }, [mail])
+const [pass, setPass] = useState('');
+  const [validPass, setValidPass] = useState(false);
+  const [passFocus, setPassFocus] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const [matchPass, setMatchPass] = useState('');
+  const [validMatch, setValidMatch] = useState(false);
+  const [matchFocus, setMatchFocus] = useState(false);
+    
+ useEffect(() => {
+    setValidPass(pass_regex.test(pass));
+    setValidMatch(pass === matchPass);
+    setErrMsg('');
+}, [pass, matchPass]) //sync
+
+
+const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -61,33 +74,34 @@ useEffect(() => {
         }
     };
 
-  return (
-    <div id="loginregis">
 
-        <section id="forgotpass">
-            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <h1>Forgot Password</h1>
-            <br/>
-            <form onSubmit={handleSubmit}>
-            <input
-                type="email"
-                value={mail}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter registered email"
-        />
-            <button type="submit" onClick={handleSubmit}>Submit</button>
-        </form>
-        <p>{message}</p>
-          <br/>
-                    <p id='remind'>
-                        <span className="line">
-                            <Link to="/Login" style={{color:'white', textDecoration:'underline' }}>LOGIN</Link>
-                        </span>
-                    </p>
-      </section>
-
-    </div>
-  );
-};
+    return (
+        <div id="loginregis">
+    
+            <section id="forgotpass">
+                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                <h1>Forgot Password</h1>
+                <br/>
+                <form onSubmit={handleSubmit}>
+                <input
+                    type="email"
+                    value={mail}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter registered email"
+            />
+                <button type="submit" onClick={handleSubmit}>Submit</button>
+            </form>
+            <p>{message}</p>
+              <br/>
+                        <p id='remind'>
+                            <span className="line">
+                                <Link to="/Login" style={{color:'white', textDecoration:'underline' }}>LOGIN</Link>
+                            </span>
+                        </p>
+          </section>
+    
+        </div>
+      );
+    };
 
 export default ForgotPassword;
