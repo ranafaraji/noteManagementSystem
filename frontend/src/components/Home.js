@@ -36,24 +36,25 @@ const Home = () => {
         navigate('/linkpage');
     }
 */
-    return (
+   return (
     <div className="home">
+        <h2>Welcome to use this Note Management Application!</h2>
         <header className="header">
-            <h2>Welcome to the Note Management Application!</h2>
-            {/* Display user-related content */}
-            </header>
-          <nav>
+        
+            <nav>
              <Link to="/home" className="naviLink">Home</Link>
 
             <Link to="/notebook" className="naviLink">My Notebook</Link>
-            <Link to="/search" className="naviLink">Search Notebook</Link>
+            <Link to="/search-note" className="naviLink">Search Notebook</Link>
             <button className="btnLogin"><Link to="/login">Login</Link></button>
+           
 
-           </nav>
+            </nav>
+        </header>
+        
     </div>
-
-
     )
 }
 
 export default Home;
+
