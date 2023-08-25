@@ -1,0 +1,57 @@
+body{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.texteditor{
+    padding: 20px 0;
+    position: relative;
+    height: 100vh;
+    width: 100vh;
+    
+}
+
+.row{
+    
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editor-part{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.editor{
+    height: 100%;
+    width:100%;
+    color: #0C134F;
+}
+
+#root .ql-container {
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    background:white;
+    
+  }
+  
+  /* Snow Theme */
+  #root .ql-snow.ql-toolbar {
+    display: block;
+    background:rgb(189, 225, 236);
+    
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+  }
+
