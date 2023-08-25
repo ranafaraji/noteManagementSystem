@@ -1,8 +1,7 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback} from 'react';
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-
 
 const LOGIN_URL = '/auth'; //connect backend
 
@@ -11,12 +10,13 @@ const LOGIN_URL = '/auth'; //connect backend
 const Login = () => {
     //to access the value of a context object that has been created using the createContext function
     const { setAuth } = useAuth();
+    
+
     const navi= useNavigate();
     const location =useLocation();
     const from= location.state?.from?.pathname || "/notebook"; 
-
+   
     const [token, setToken] = useState();
-
     //focus area
     const userRef = useRef();
     const errRef = useRef();
@@ -24,7 +24,6 @@ const Login = () => {
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
-
 
 
     useEffect(() => {
@@ -48,19 +47,22 @@ const Login = () => {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
-
             );
-
+          
             //only data property
             console.log(JSON.stringify(response?.data));
             //all data
-            //console.log(JSON.stringify(response));
+            console.log(JSON.stringify(response));
+            //const user = response.data.username;
             const accessToken = response?.data?.accessToken; 
             //array
             const roles = response?.data?.roles;
-            const userString = localStorage.getItem('user');
 
             setAuth({ user, pwd, roles, accessToken });
+            setUser('');
+            setPwd('');
+            // Call the mutation hook to perform login and set username in cache
+            //await mutate({ user, pwd }); //to store the username in the cache 
             navi(from, {replace:true});
              
         } catch (err) {
@@ -77,10 +79,9 @@ const Login = () => {
             errRef.current.focus(); //screen reader focus error display
         }
     }
-
-
 //=====================================================
-   return (
+    return (
+        <div className='loginRegisBody'>
         <div div id="loginregis">
                 <section id="lgsec">
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -116,20 +117,13 @@ const Login = () => {
                     </p>
                     <br/>
                     <p id='remind'>
-                    <br />
+                        Forgot password?<br />
                         <span className="line">
-                            <Link to="/ForgotPass" style={{color:'white', textDecoration:'underline'}}>Forgot Password?</Link>
-                        </span>
-
-                    </p>
-
-                    <p id='remind'>
-                    <br />
-                        <span className="line">
-                            <Link to="/Home" style={{color:'white', textDecoration:'underline'}}>Home</Link>
+                            <Link to="/ForgotPass" style={{color:'white', textDecoration:'underline'}}>Reset Password</Link>
                         </span>
                     </p>
                 </section>
+        </div>
         </div>
     )
 }
