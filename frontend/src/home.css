@@ -5,13 +5,29 @@
 }
 .home{
     background: linear-gradient(to bottom right, #B4E4FF,#FFD4D4);
-    height: 150vh;
+    height: 90vh;
     width:100vh;
-    padding: 0;
-    border: 8px solid black;
+    padding: 0px;
+    margin: 100px;
+    
+    border-radius: 20px;
+    
+}
+ h2{
+    position: sticky;
+    display: flex;
+    top: 25vh;
+    padding: 20px;
+    margin-left: 20px;
+    
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #273759;
 }
 .header{
     position: sticky;
+    display: flex;
     top: 45vh;
     left: 100px;
     width: 100%;
