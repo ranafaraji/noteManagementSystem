@@ -3,6 +3,7 @@
     padding: 0;
     list-style: none;
     border: none;
+    
 }
 
 html {
@@ -17,8 +18,10 @@ html {
     min-width: 100vh;
     padding: 1rem 10px;
     margin: 10px 100px 10px 100px;
-    border: 2px solid green;
+    
+    
   }
+
 
 .noteheader h1{
     justify-content: center;
@@ -26,18 +29,37 @@ html {
     color: #0C134F;
 }
 
+.noteContainer {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    color: #313982;
+    border: 5px rgba(255, 255, 255, 0.845) solid;
+    border-radius: 10px;
+   
+    
+}
+
 #notesec {
     min-width: 100vh;
     height: 100vh;
     padding: 20px;
-    border: 2px solid blue;
+    
     border-radius: 45px;
+    
     
 }
 
+
+
 #search{
-    color:#0C134F;
+    display:inline-block;
+    position: relative;
+    left: 100px;
+    align-items: center;
+    color:#0c134f;
     background-color: transparent;
+    padding: 5px;
     cursor: pointer;
     transition: opacity 0.1s ease;
 }
@@ -46,8 +68,12 @@ html {
 }
 
 .searchbar{
-    
+
+    position: relative;
+    left: 500px;
     outline: none;
+    width: 50vh;
+ 
 }
 
 .noteList{
@@ -70,10 +96,21 @@ html {
 }
 
 .notedatedel,.notefooter{
-    display: flex;
-    justify-content: space-between;
+    display:flex;
+    justify-content: end;
     align-items: center;
 }
+
+.notedatedel h6{
+    padding: 10px;
+}
+
+.notedatedel .icon{
+    padding: 10px;
+    color: #0C134F;
+}
+
+
 
 .note.new{
     background-color: aquamarine;
@@ -95,4 +132,11 @@ textarea:focus{
     border-radius: 0.8rem;
     padding:8px 13px;
 
+}
+
+.addbtn{
+    position: relative;
+    left: 270px;
+    font-size: 80px;
+    padding: 20px;
 }
